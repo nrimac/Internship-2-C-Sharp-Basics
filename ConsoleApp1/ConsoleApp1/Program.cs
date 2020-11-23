@@ -5,6 +5,28 @@ namespace ConsoleApp1
 {
     class Program
     {
+        public static bool Confirm()
+        {
+        FalseInput:;
+            Console.WriteLine("Jeste li sigurni da želite nastaviti? y/n");
+            var confirm = Console.ReadLine();
+            switch (confirm)
+            {
+                case "y":
+                    {
+                        return true;
+                    }
+                case "n":
+                    {
+                        return false;
+                    }
+                default:
+                    {
+                        Console.WriteLine("Krivi unos!");
+                        goto FalseInput;
+                    }
+            }
+        }
         public static void OptionsPrint()
         {
             Console.WriteLine("Odaberite akciju:");
@@ -21,10 +43,17 @@ namespace ConsoleApp1
         }
         public static void PrintList(Dictionary<int,string> songs)
         {
-            Console.WriteLine("Lista pjesama:");
-            foreach (var song in songs)
+            if (songs.Count > 0)
             {
-                Console.WriteLine("{0}. - {1}",song.Key,song.Value);
+                Console.WriteLine("Lista pjesama:");
+                foreach (var song in songs)
+                {
+                    Console.WriteLine("{0}. - {1}", song.Key, song.Value);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Lista je prazna.");
             }
         }
         public static void PrintSong(Dictionary<int, string> songs)
@@ -55,6 +84,66 @@ namespace ConsoleApp1
                 }
             }
             Console.WriteLine("Pjesma nije na listi.");
+        EndFunction:;
+        }
+        public static void SongInput(Dictionary<int, string> songs)
+        {
+            if(Confirm()==false)
+               goto EndFunction;
+            
+            Console.WriteLine("Unesite ime nove pjesme:");
+            var newSongName = Console.ReadLine();
+            foreach (var song in songs)
+            {
+                if(newSongName==song.Value)
+                {
+                    Console.WriteLine("Pjesma već postoji na listi.");
+                    goto EndFunction;
+                }
+            }
+            songs.Add(songs.Count + 1, newSongName);
+            Console.WriteLine("Pjesma dodana!");
+        EndFunction:;
+        }
+        public static void DeleteSongByOrdinalNumber(Dictionary<int, string> songs)
+        {
+            if (Confirm() == false)
+                goto EndFunction;
+            Console.WriteLine("Unesite redni broj pjesme koju želite izbrisati:");
+            var songToDeleteNum = int.Parse(Console.ReadLine());
+            foreach (var song in songs)
+            {
+                if(song.Key==songToDeleteNum)
+                {
+                    songs.Remove(song.Key);
+                }
+            }
+        EndFunction:;
+        }
+        public static void DeleteSongByName(Dictionary<int, string> songs)
+        {
+            if (Confirm() == false)
+                goto EndFunction;
+            Console.WriteLine("Unesite ime pjesme koju želite izbrisati:");
+            var songToDeleteName = Console.ReadLine();
+            foreach (var song in songs)
+            {
+                if (song.Value == songToDeleteName)
+                {
+                    songs.Remove(song.Key);
+                }
+            }
+        EndFunction:;
+        }
+        public static void DeleteSongList(Dictionary<int, string> songs)
+        {
+            if (Confirm() == false)
+                goto EndFunction;
+            foreach (var song in songs)
+            {
+                songs.Remove(song.Key);
+            }
+            Console.WriteLine("Lista izbrisana!");
         EndFunction:;
         }
         static void Main(string[] args)
@@ -91,18 +180,22 @@ namespace ConsoleApp1
                     }
                 case 4:
                     {
+                        SongInput(songs);
                         break;
                     }
                 case 5:
                     {
+                        DeleteSongByOrdinalNumber(songs);
                         break;
                     }
                 case 6:
                     {
+                        DeleteSongByName(songs);
                         break;
                     }
                 case 7:
                     {
+                        DeleteSongList(songs);
                         break;
                     }
                 case 8:
@@ -118,7 +211,10 @@ namespace ConsoleApp1
                         goto EndOfProgram;
                     }
                 default:
-                    break;
+                    {
+                        Console.WriteLine("Krivi unos!");
+                        goto UserChoice;
+                    }
             }
             goto UserChoice;
         EndOfProgram:;
