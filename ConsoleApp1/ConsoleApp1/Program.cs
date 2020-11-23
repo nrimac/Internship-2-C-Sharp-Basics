@@ -5,16 +5,8 @@ namespace ConsoleApp1
 {
     class Program
     {
-        public static void PrintList(Dictionary<int,string> songs)
+        public static void OptionsPrint()
         {
-            foreach (var song in songs)
-            {
-
-            }
-        }
-        static void Main(string[] args)
-        {
-            var songs = new Dictionary<int, string>();
             Console.WriteLine("Odaberite akciju:");
             Console.WriteLine("1 - Ispis cijele liste");
             Console.WriteLine("2 - Ispis imena pjesme unosom pripadajućeg rednog broja");
@@ -26,19 +18,75 @@ namespace ConsoleApp1
             Console.WriteLine("8 - Uređivanje imena pjesme");
             Console.WriteLine("9 - Uređivanje rednog broja pjesme, odnosno premještanje pjesme na novi redni broj u listi");
             Console.WriteLine("0 - Izlaz iz aplikacije");
+        }
+        public static void PrintList(Dictionary<int,string> songs)
+        {
+            Console.WriteLine("Lista pjesama:");
+            foreach (var song in songs)
+            {
+                Console.WriteLine("{0}. - {1}",song.Key,song.Value);
+            }
+        }
+        public static void PrintSong(Dictionary<int, string> songs)
+        {
+            Console.WriteLine("Unesite redni broj pjesme koju želite ispisati:");
+            var i = int.Parse(Console.ReadLine());
+            foreach (var song in songs)
+            {
+                if (i == song.Key)
+                {
+                    Console.WriteLine("Pjesma s upisanim rednim brojem je {0}.",song.Value);
+                    goto EndFunction;
+                }
+            }
+            Console.WriteLine("Ne postoji pjesma sa zadanim rednim brojem.");
+        EndFunction:;
+        }
+        public static void PrintOrdinalNumber(Dictionary<int, string> songs)
+        {
+            Console.WriteLine("Unesite ime pjesme kojoj želite ispisati redni broj:");
+            var i = Console.ReadLine();
+            foreach (var song in songs)
+            {
+                if(i==song.Value)
+                {
+                    Console.WriteLine("Pjesma je {0}. na listi.",song.Key);
+                    goto EndFunction;
+                }
+            }
+            Console.WriteLine("Pjesma nije na listi.");
+        EndFunction:;
+        }
+        static void Main(string[] args)
+        {
+            var songs = new Dictionary<int, string>() {
+                {1,"Hello" },
+                {2,"Can't hold us" },
+                {3,"Butterflies" },
+                {4,"Tinder samurai" },
+                {5,"Kali ma" },
+                {6,"Oh my" },
+                {7,"Mr Sandman" },
+                {8,"Keš u krvi" }
+            };
+        UserChoice:;
+            OptionsPrint();
             var userChoice = int.Parse(Console.ReadLine());
             switch (userChoice)
             {
                 case 1:
                     {
+                        PrintList(songs);
                         break;
                     }
                 case 2:
                     {
+                        PrintSong(songs);
                         break;
                     }
                 case 3:
                     {
+                        PrintOrdinalNumber(songs);
                         break;
                     }
                 case 4:
@@ -67,11 +115,13 @@ namespace ConsoleApp1
                     }
                 case 0:
                     {
-                        break;
+                        goto EndOfProgram;
                     }
                 default:
                     break;
             }
+            goto UserChoice;
+        EndOfProgram:;
         }
     }
 }
