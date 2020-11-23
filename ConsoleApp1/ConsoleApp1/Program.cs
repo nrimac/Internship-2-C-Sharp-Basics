@@ -200,18 +200,35 @@ namespace ConsoleApp1
                 Console.WriteLine("Ne postoji uneseni index!");
                 goto EndFunction;
             }
+            var nameOfChangingSong = songs[oldSongIndex];
             if (oldSongIndex - newSongIndex > 0)
             {
-                for (int i = 0; i < songs.Count; i++)
+                //A -B C D E -F G
+                for (int i = oldSongIndex; i >= newSongIndex; i--)
                 {
-
+                    if(i>newSongIndex)
+                    {
+                        songs[i] = songs[i - 1];
+                    }
+                    else
+                    {
+                        songs[i] = nameOfChangingSong;
+                    }
                 }
             }
             else
             {
-                for (int i = 0; i < songs.Count; i++)
+                //A -B C D E -F G
+                for (int i = oldSongIndex; i <= newSongIndex; i++)
                 {
-
+                    if(i<newSongIndex)
+                    {
+                        songs[i] = songs[i + 1];
+                    }
+                    else
+                    {
+                        songs[i] = nameOfChangingSong;
+                    }
                 }
             }
             Console.WriteLine("Uspješna promjena!");
