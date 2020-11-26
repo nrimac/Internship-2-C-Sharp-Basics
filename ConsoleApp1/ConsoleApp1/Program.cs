@@ -125,13 +125,13 @@ namespace ConsoleApp1
             if (Confirm() == false)
                 goto EndFunction;
             Console.WriteLine("Unesite redni broj pjesme koju želite izbrisati:");
-            var songToDeleteIndex = int.Parse(Console.ReadLine());
-            if(songToDeleteIndex>songs.Count)
+            var indexOfSongToDelete = int.Parse(Console.ReadLine());
+            if(indexOfSongToDelete > songs.Count)
             {
                 Console.WriteLine("Ne postoji uneseni index!");
                 goto EndFunction;
             }
-            for (int i = songToDeleteIndex; i < songs.Count; i++)
+            for (int i = indexOfSongToDelete; i < songs.Count; i++)
             {
                 songs[i] = (songs[i + 1]);
             }
@@ -145,12 +145,12 @@ namespace ConsoleApp1
             if (Confirm() == false)
                 goto EndFunction;
             Console.WriteLine("Unesite ime pjesme koju želite izbrisati:");
-            var songToDeleteName = Console.ReadLine();
+            var nameOfSongToDelete = Console.ReadLine();
             var songToDeleteIndex=1;
             var t = false;
             foreach (var song in songs)
             {
-                if (song.Value == songToDeleteName)
+                if (song.Value == nameOfSongToDelete)
                     t = true;
             }
             if(t==false)
@@ -160,7 +160,7 @@ namespace ConsoleApp1
             }
             foreach (var song in songs)
             {
-                if (song.Value == songToDeleteName)
+                if (song.Value == nameOfSongToDelete)
                     songToDeleteIndex = song.Key;
             }
             for (int i = songToDeleteIndex; i < songs.Count; i++)
@@ -186,9 +186,9 @@ namespace ConsoleApp1
             if (Confirm() == false)
                 goto EndFunction;
             Console.WriteLine("Upišite redni broj pjesme kojoj želite promijeniti ime:");
-            var changeSongNameIndex = int.Parse(Console.ReadLine());
+            var songIndex = int.Parse(Console.ReadLine());
             Console.WriteLine("Unesite novo ime pjesme:");
-            songs[changeSongNameIndex] = (Console.ReadLine());
+            songs[songIndex] = (Console.ReadLine());
         EndFunction:;
             Console.WriteLine();
         }
@@ -253,10 +253,10 @@ namespace ConsoleApp1
             
             for (int i = 1; i <= songs.Count; i++)
             {
-                var a = randomInt.Next(1, songs.Count + 1);
+                var newRandomPosition = randomInt.Next(1, songs.Count + 1);
                 var switchSong = songs[i];
-                songs[i] = songs[a];
-                songs[a] = switchSong;
+                songs[i] = songs[newRandomPosition];
+                songs[newRandomPosition] = switchSong;
             }
             Console.WriteLine("Pjesme izmješane!");
             Console.WriteLine();
