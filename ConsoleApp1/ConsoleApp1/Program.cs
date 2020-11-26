@@ -39,7 +39,9 @@ namespace ConsoleApp1
             Console.WriteLine("7 - Brisanje cijele liste");
             Console.WriteLine("8 - Uređivanje imena pjesme");
             Console.WriteLine("9 - Uređivanje rednog broja pjesme, odnosno premještanje pjesme na novi redni broj u listi");
+            Console.WriteLine("10 - Shuffle songs");
             Console.WriteLine("0 - Izlaz iz aplikacije");
+            Console.WriteLine();
         }
         public static void PrintList(Dictionary<int,string> songs)
         {
@@ -64,6 +66,7 @@ namespace ConsoleApp1
             {
                 Console.WriteLine("Lista je prazna.");
             }
+            Console.WriteLine();
         }
         public static void PrintSong(Dictionary<int, string> songs)
         {
@@ -79,6 +82,7 @@ namespace ConsoleApp1
             }
             Console.WriteLine("Ne postoji pjesma sa zadanim rednim brojem.");
         EndFunction:;
+            Console.WriteLine();
         }
         public static void PrintOrdinalNumber(Dictionary<int, string> songs)
         {
@@ -94,6 +98,7 @@ namespace ConsoleApp1
             }
             Console.WriteLine("Pjesma nije na listi.");
         EndFunction:;
+            Console.WriteLine();
         }
         public static void SongInput(Dictionary<int, string> songs)
         {
@@ -113,6 +118,7 @@ namespace ConsoleApp1
             songs.Add(songs.Count + 1, newSongName);
             Console.WriteLine("Pjesma dodana!");
         EndFunction:;
+            Console.WriteLine();
         }
         public static void DeleteSongByOrdinalNumber(Dictionary<int, string> songs)
         {
@@ -132,6 +138,7 @@ namespace ConsoleApp1
             songs.Remove(songs.Count);
             Console.WriteLine("Pjesma je izbrisana.");
         EndFunction:;
+            Console.WriteLine();
         }
         public static void DeleteSongByName(Dictionary<int, string> songs)
         {
@@ -163,6 +170,7 @@ namespace ConsoleApp1
             songs.Remove(songs.Count);
             Console.WriteLine("Pjesma izbrisana!");
         EndFunction:;
+            Console.WriteLine();
         }
         public static void DeleteSongList(Dictionary<int, string> songs)
         {
@@ -171,6 +179,7 @@ namespace ConsoleApp1
             songs.Clear();
             Console.WriteLine("Lista izbrisana!");
         EndFunction:;
+            Console.WriteLine();
         }
         public static void EditSongName(Dictionary<int, string> songs)
         {
@@ -181,6 +190,7 @@ namespace ConsoleApp1
             Console.WriteLine("Unesite novo ime pjesme:");
             songs[changeSongNameIndex] = (Console.ReadLine());
         EndFunction:;
+            Console.WriteLine();
         }
         public static void EditSongIndex(Dictionary<int, string> songs)
         {
@@ -232,6 +242,24 @@ namespace ConsoleApp1
                 }
             }
             Console.WriteLine("Uspješna promjena!");
+        EndFunction:;
+            Console.WriteLine();
+        }
+        public static void Shuffler(Dictionary<int,string> songs)
+        {
+            if (Confirm() == false)
+                goto EndFunction;
+            var randomInt = new Random();
+            
+            for (int i = 1; i <= songs.Count; i++)
+            {
+                var a = randomInt.Next(1, songs.Count + 1);
+                var switchSong = songs[i];
+                songs[i] = songs[a];
+                songs[a] = switchSong;
+            }
+            Console.WriteLine("Pjesme izmješane!");
+            Console.WriteLine();
         EndFunction:;
         }
         static void Main(string[] args)
@@ -294,6 +322,11 @@ namespace ConsoleApp1
                 case 9:
                     {
                         EditSongIndex(songs);
+                        break;
+                    }
+                case 10:
+                    {
+                        Shuffler(songs);
                         break;
                     }
                 case 0:
