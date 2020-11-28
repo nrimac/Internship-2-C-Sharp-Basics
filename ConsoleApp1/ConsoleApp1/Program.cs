@@ -5,6 +5,12 @@ namespace ConsoleApp1
 {
     class Program
     {
+        public static void EndText()
+        {
+            Console.WriteLine("\nPress any key to continue...");
+            Console.ReadKey();
+            Console.Clear();
+        }
         public static bool Confirm()
         {
         FalseInput:;
@@ -29,6 +35,7 @@ namespace ConsoleApp1
         }
         public static void OptionsPrint()
         {
+            Console.Clear();
             Console.WriteLine("Odaberite akciju:");
             Console.WriteLine("1 - Ispis cijele liste");
             Console.WriteLine("2 - Ispis imena pjesme unosom pripadajućeg rednog broja");
@@ -66,201 +73,221 @@ namespace ConsoleApp1
             {
                 Console.WriteLine("Lista je prazna.");
             }
-            Console.WriteLine();
+            EndText();
         }
         public static void PrintSong(Dictionary<int, string> songs)
         {
             Console.WriteLine("Unesite redni broj pjesme koju želite ispisati:");
-            var i = int.Parse(Console.ReadLine());
+            var songIndex = int.Parse(Console.ReadLine());
+            var t = false;
             foreach (var song in songs)
             {
-                if (i == song.Key)
+                if (songIndex == song.Key)
                 {
                     Console.WriteLine("Pjesma s upisanim rednim brojem je {0}.",song.Value);
-                    goto EndFunction;
+                    t = true;
                 }
             }
-            Console.WriteLine("Ne postoji pjesma sa zadanim rednim brojem.");
-        EndFunction:;
-            Console.WriteLine();
+            if (t == false)
+            {
+                Console.WriteLine("Ne postoji pjesma sa zadanim rednim brojem.");
+            }
+            EndText();
         }
         public static void PrintOrdinalNumber(Dictionary<int, string> songs)
         {
             Console.WriteLine("Unesite ime pjesme kojoj želite ispisati redni broj:");
-            var i = Console.ReadLine();
-            foreach (var song in songs)
-            {
-                if(i==song.Value)
-                {
-                    Console.WriteLine("Pjesma je {0}. na listi.",song.Key);
-                    goto EndFunction;
-                }
-            }
-            Console.WriteLine("Pjesma nije na listi.");
-        EndFunction:;
-            Console.WriteLine();
-        }
-        public static void SongInput(Dictionary<int, string> songs)
-        {
-            if(Confirm()==false)
-               goto EndFunction;
-            
-            Console.WriteLine("Unesite ime nove pjesme:");
-            var newSongName = Console.ReadLine();
-            foreach (var song in songs)
-            {
-                if(newSongName==song.Value)
-                {
-                    Console.WriteLine("Pjesma već postoji na listi.");
-                    goto EndFunction;
-                }
-            }
-            songs.Add(songs.Count + 1, newSongName);
-            Console.WriteLine("Pjesma dodana!");
-        EndFunction:;
-            Console.WriteLine();
-        }
-        public static void DeleteSongByOrdinalNumber(Dictionary<int, string> songs)
-        {
-            if (Confirm() == false)
-                goto EndFunction;
-            Console.WriteLine("Unesite redni broj pjesme koju želite izbrisati:");
-            var indexOfSongToDelete = int.Parse(Console.ReadLine());
-            if(indexOfSongToDelete > songs.Count)
-            {
-                Console.WriteLine("Ne postoji uneseni index!");
-                goto EndFunction;
-            }
-            for (int i = indexOfSongToDelete; i < songs.Count; i++)
-            {
-                songs[i] = (songs[i + 1]);
-            }
-            songs.Remove(songs.Count);
-            Console.WriteLine("Pjesma je izbrisana.");
-        EndFunction:;
-            Console.WriteLine();
-        }
-        public static void DeleteSongByName(Dictionary<int, string> songs)
-        {
-            if (Confirm() == false)
-                goto EndFunction;
-            Console.WriteLine("Unesite ime pjesme koju želite izbrisati:");
-            var nameOfSongToDelete = Console.ReadLine();
-            var songToDeleteIndex=1;
+            var songName = Console.ReadLine();
             var t = false;
             foreach (var song in songs)
             {
-                if (song.Value == nameOfSongToDelete)
+                if(songName == song.Value)
+                {
+                    Console.WriteLine("Pjesma je {0}. na listi.",song.Key);
                     t = true;
+                }
             }
-            if(t==false)
+            if(t == false)
             {
-                Console.WriteLine("Unesena pjesma nije na listi.");
-                goto EndFunction;
+                Console.WriteLine("Pjesma nije na listi.");
             }
-            foreach (var song in songs)
+            EndText();
+        }
+        public static void SongInput(Dictionary<int, string> songs)
+        {
+            if (Confirm() == true)
             {
-                if (song.Value == nameOfSongToDelete)
-                    songToDeleteIndex = song.Key;
+                Console.WriteLine("Unesite ime nove pjesme:");
+                var newSongName = Console.ReadLine();
+                var t = false;
+                foreach (var song in songs)
+                {
+                    if (newSongName == song.Value)
+                    {
+                        Console.WriteLine("Pjesma već postoji na listi.");
+                        t = true;
+                    }
+                }
+                if (t == false)
+                {
+                    songs.Add(songs.Count + 1, newSongName);
+                    Console.WriteLine("Pjesma dodana!");
+                }
             }
-            for (int i = songToDeleteIndex; i < songs.Count; i++)
+            EndText();
+        }
+        public static void DeleteSongByOrdinalNumber(Dictionary<int, string> songs)
+        {
+            if (Confirm() == true)
             {
-                songs[i] = (songs[i + 1]);
+                Console.WriteLine("Unesite redni broj pjesme koju želite izbrisati:");
+                var indexOfSongToDelete = int.Parse(Console.ReadLine());
+                if (indexOfSongToDelete > songs.Count)
+                {
+                    Console.WriteLine("Ne postoji uneseni index!");
+                }
+                else
+                {
+                    for (int i = indexOfSongToDelete; i < songs.Count; i++)
+                    {
+                        songs[i] = (songs[i + 1]);
+                    }
+                    songs.Remove(songs.Count);
+                    Console.WriteLine("Pjesma je izbrisana.");
+                }
             }
-            songs.Remove(songs.Count);
-            Console.WriteLine("Pjesma izbrisana!");
-        EndFunction:;
-            Console.WriteLine();
+            EndText();
+        }
+        public static void DeleteSongByName(Dictionary<int, string> songs)
+        {
+            if (Confirm() == true)
+            {
+                Console.WriteLine("Unesite ime pjesme koju želite izbrisati:");
+                var nameOfSongToDelete = Console.ReadLine();
+                var songToDeleteIndex = 1;
+                var t = false;
+                foreach (var song in songs)
+                {
+                    if (song.Value == nameOfSongToDelete)
+                        t = true;
+                }
+                if (t == false)
+                {
+                    Console.WriteLine("Unesena pjesma nije na listi.");
+                }
+                else
+                {
+                    foreach (var song in songs)
+                    {
+                        if (song.Value == nameOfSongToDelete)
+                        { 
+                            songToDeleteIndex = song.Key;
+                        }
+                    }
+                    for (int i = songToDeleteIndex; i < songs.Count; i++)
+                    {
+                        songs[i] = (songs[i + 1]);
+                    }
+                    songs.Remove(songs.Count);
+                    Console.WriteLine("Pjesma izbrisana!");
+                }
+            }
+            EndText();
         }
         public static void DeleteSongList(Dictionary<int, string> songs)
         {
-            if (Confirm() == false)
-                goto EndFunction;
-            songs.Clear();
-            Console.WriteLine("Lista izbrisana!");
-        EndFunction:;
-            Console.WriteLine();
+            if (Confirm() == true)
+            {
+                songs.Clear();
+                Console.WriteLine("Lista izbrisana!");
+            }
+            EndText();
         }
         public static void EditSongName(Dictionary<int, string> songs)
         {
-            if (Confirm() == false)
-                goto EndFunction;
-            Console.WriteLine("Upišite redni broj pjesme kojoj želite promijeniti ime:");
-            var songIndex = int.Parse(Console.ReadLine());
-            Console.WriteLine("Unesite novo ime pjesme:");
-            songs[songIndex] = (Console.ReadLine());
-        EndFunction:;
-            Console.WriteLine();
+            if (Confirm() == true)
+            {
+                Console.WriteLine("Upišite redni broj pjesme kojoj želite promijeniti ime:");
+                var songIndex = int.Parse(Console.ReadLine());
+                Console.WriteLine("Unesite novo ime pjesme:");
+                songs[songIndex] = (Console.ReadLine());
+                Console.WriteLine("Ime promijenjeno!");
+            }
+            EndText();
         }
         public static void EditSongIndex(Dictionary<int, string> songs)
         {
-            if (Confirm() == false)
-                goto EndFunction;
-            Console.WriteLine("Upišite redni broj pjesme kojoj želite promijeniti redni broj:");
-            var oldSongIndex = int.Parse(Console.ReadLine());
-            if (oldSongIndex > songs.Count)
+            if (Confirm() == true)
             {
-                Console.WriteLine("Ne postoji uneseni index!");
-                goto EndFunction;
-            }
-            Console.WriteLine("Upišite novi redni broj pjesme:");
-            var newSongIndex = int.Parse(Console.ReadLine());
-            if (newSongIndex > songs.Count)
-            {
-                Console.WriteLine("Ne postoji uneseni index!");
-                goto EndFunction;
-            }
-            var nameOfChangingSong = songs[oldSongIndex];
-            if (oldSongIndex - newSongIndex > 0)
-            {
-                //A -B C D E -F G
-                for (int i = oldSongIndex; i >= newSongIndex; i--)
+                Console.WriteLine("Upišite redni broj pjesme kojoj želite promijeniti redni broj:");
+                var oldSongIndex = int.Parse(Console.ReadLine());
+                var t = true;
+                if (oldSongIndex > songs.Count)
                 {
-                    if(i>newSongIndex)
+                    Console.WriteLine("Ne postoji uneseni index!");
+                    t = false;
+                }
+                Console.WriteLine("Upišite novi redni broj pjesme:");
+                var newSongIndex = int.Parse(Console.ReadLine());
+                if (newSongIndex > songs.Count)
+                {
+                    Console.WriteLine("Ne postoji uneseni index!");
+                    t = false;
+                }
+                if (t == true)
+                {
+                    var nameOfChangingSong = songs[oldSongIndex];
+                    if (oldSongIndex - newSongIndex > 0)
                     {
-                        songs[i] = songs[i - 1];
+                        //A -B C D E -F G
+                        for (int i = oldSongIndex; i >= newSongIndex; i--)
+                        {
+                            if (i > newSongIndex)
+                            {
+                                songs[i] = songs[i - 1];
+                            }
+                            else
+                            {
+                                songs[i] = nameOfChangingSong;
+                            }
+                        }
                     }
                     else
                     {
-                        songs[i] = nameOfChangingSong;
+                        //A -B C D E -F G
+                        for (int i = oldSongIndex; i <= newSongIndex; i++)
+                        {
+                            if (i < newSongIndex)
+                            {
+                                songs[i] = songs[i + 1];
+                            }
+                            else
+                            {
+                                songs[i] = nameOfChangingSong;
+                            }
+                        }
                     }
+                    Console.WriteLine("Uspješna promjena!");
                 }
             }
-            else
-            {
-                //A -B C D E -F G
-                for (int i = oldSongIndex; i <= newSongIndex; i++)
-                {
-                    if(i<newSongIndex)
-                    {
-                        songs[i] = songs[i + 1];
-                    }
-                    else
-                    {
-                        songs[i] = nameOfChangingSong;
-                    }
-                }
-            }
-            Console.WriteLine("Uspješna promjena!");
-        EndFunction:;
-            Console.WriteLine();
+            EndText();
         }
         public static void Shuffler(Dictionary<int,string> songs)
         {
-            if (Confirm() == false)
-                goto EndFunction;
-            var randomInt = new Random();
-            
-            for (int i = 1; i <= songs.Count; i++)
+            if (Confirm() == true)
             {
-                var newRandomPosition = randomInt.Next(1, songs.Count + 1);
-                var switchSong = songs[i];
-                songs[i] = songs[newRandomPosition];
-                songs[newRandomPosition] = switchSong;
+                var randomInt = new Random();
+
+                for (int i = 1; i <= songs.Count; i++)
+                {
+                    var newRandomPosition = randomInt.Next(1, songs.Count + 1);
+                    var switchSong = songs[i];
+                    songs[i] = songs[newRandomPosition];
+                    songs[newRandomPosition] = switchSong;
+                }
+                Console.WriteLine("Pjesme izmješane!");
             }
-            Console.WriteLine("Pjesme izmješane!");
-            Console.WriteLine();
-        EndFunction:;
+            EndText();
         }
         static void Main(string[] args)
         {
@@ -274,72 +301,84 @@ namespace ConsoleApp1
                 {7,"Mr Sandman" },
                 {8,"Keš u krvi" }
             };
-        UserChoice:;
-            OptionsPrint();
-            var userChoice = int.Parse(Console.ReadLine());
-            switch (userChoice)
+        
+            while (true)
             {
-                case 1:
+                OptionsPrint();
+                try
+                {
+                    var userChoice = int.Parse(Console.ReadLine());
+                    Console.Clear();
+                    switch (userChoice)
                     {
-                        PrintList(songs);
-                        break;
+                        case 1:
+                            {
+                                PrintList(songs);
+                                break;
+                            }
+                        case 2:
+                            {
+                                PrintSong(songs);
+                                break;
+                            }
+                        case 3:
+                            {
+                                PrintOrdinalNumber(songs);
+                                break;
+                            }
+                        case 4:
+                            {
+                                SongInput(songs);
+                                break;
+                            }
+                        case 5:
+                            {
+                                DeleteSongByOrdinalNumber(songs);
+                                break;
+                            }
+                        case 6:
+                            {
+                                DeleteSongByName(songs);
+                                break;
+                            }
+                        case 7:
+                            {
+                                DeleteSongList(songs);
+                                break;
+                            }
+                        case 8:
+                            {
+                                EditSongName(songs);
+                                break;
+                            }
+                        case 9:
+                            {
+                                EditSongIndex(songs);
+                                break;
+                            }
+                        case 10:
+                            {
+                                Shuffler(songs);
+                                break;
+                            }
+                        case 0:
+                            {
+                                goto EndOfProgram;
+                            }
+                        default:
+                            {
+                                Console.WriteLine("Krivi unos!");
+                                break;
+                            }
                     }
-                case 2:
-                    {
-                        PrintSong(songs);
-                        break;
-                    }
-                case 3:
-                    {
-                        PrintOrdinalNumber(songs);
-                        break;
-                    }
-                case 4:
-                    {
-                        SongInput(songs);
-                        break;
-                    }
-                case 5:
-                    {
-                        DeleteSongByOrdinalNumber(songs);
-                        break;
-                    }
-                case 6:
-                    {
-                        DeleteSongByName(songs);
-                        break;
-                    }
-                case 7:
-                    {
-                        DeleteSongList(songs);
-                        break;
-                    }
-                case 8:
-                    {
-                        EditSongName(songs);
-                        break;
-                    }
-                case 9:
-                    {
-                        EditSongIndex(songs);
-                        break;
-                    }
-                case 10:
-                    {
-                        Shuffler(songs);
-                        break;
-                    }
-                case 0:
-                    {
-                        goto EndOfProgram;
-                    }
-                default:
-                    {
-                        Console.WriteLine("Krivi unos!");
-                        goto UserChoice;
-                    }
+                }
+                catch
+                {
+                    Console.Clear();
+                    Console.WriteLine("Mozete unijeti samo broj!");
+                    EndText();
+                }
             }
-            goto UserChoice;
         EndOfProgram:;
         }
     }
